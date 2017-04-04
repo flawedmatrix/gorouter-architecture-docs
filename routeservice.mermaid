@@ -1,0 +1,9 @@
+sequenceDiagram
+  Client->>+Gorouter: Client request
+    Gorouter->>+Route Service: Gorouter request
+      Route Service-->>Gorouter: Route service request
+      Gorouter-->>Backend: Gorouter request
+      Backend-->>Gorouter: Backend response
+      Gorouter-->>Route Service: Gorouter response
+    Route Service-->>-Gorouter: Route service response
+  Gorouter->>-Client: Gorouter response

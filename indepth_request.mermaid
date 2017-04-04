@@ -1,0 +1,16 @@
+sequenceDiagram
+  Client->>+Router http.Server: Client request
+  Router http.Server-->>Client: (Error response)
+    Router http.Server->>negroni Handlers: Received request
+    negroni Handlers-->>Router http.Server: (Error response)
+    Router http.Server-->>Client: (Error response)
+    negroni Handlers->>+httputil.ReverseProxy: Processed request
+    httputil.ReverseProxy->>+ProxyRoundTripper: Gorouter request
+      ProxyRoundTripper->>+Backend: Gorouter request
+      ProxyRoundTripper-->>Router http.Server: (Error response)
+      Router http.Server-->>Client: (Error response)
+      Backend->>-ProxyRoundTripper: Backend response
+    ProxyRoundTripper->>-httputil.ReverseProxy: Backend Response
+    httputil.ReverseProxy->>Router http.Server: Backend Response
+    Router http.Server->>-Client: Gorouter Response
+    httputil.ReverseProxy->>negroni Handlers: Request postprocessing

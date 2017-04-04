@@ -1,0 +1,24 @@
+graph TB
+  main-->router
+
+  router-->srv["Proxy (http.Server + TCP Listener)"]
+  srv-->proxy
+
+  router-->srv2["Proxy (http.Server + TLS Listener)"]
+  srv2-->proxy
+
+  router-->srv3["Varz/Routes/Health endpoints (http.Server)"]
+
+  proxy-->lookup["Lookup Negroni Handler"]
+  lookup-->rr["Route Registry (registry)"]
+  rr-->ns["nats-subscriber (mbus)"]
+  rr-->rf["(route_fetcher)"]
+
+  proxy-->rs["Route service Negroni Handler"]
+  rs-->routeservice
+
+  proxy-->httputil.ReverseProxy
+  httputil.ReverseProxy-->prt["ProxyRoundTripper (proxy/round_tripper)"]
+
+  prt-->be["All the backends"]
+  proxy-->nh["Other negroni Handlers (handlers)"]

@@ -1,0 +1,15 @@
+graph TB
+  subgraph Ifrit Process
+    b1["Initialize Runner"]-->b2["Close ready channel"]
+    b2-->b3["LOOP command OR process os signal"]
+    b3-->b3
+  end
+  subgraph Main Goroutine
+    a1["Run Ifrit Process"]-->a2["Wait for process to be ready"]
+    a2-->a3["Catch os signal"]
+    a3-->a4["Wait until process exits"]
+  end
+a1-->b1
+b2-->a2
+a3-->b3
+b3-->a4

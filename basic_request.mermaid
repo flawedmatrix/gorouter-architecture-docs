@@ -1,0 +1,6 @@
+sequenceDiagram
+  Client->>+Gorouter: Client request
+    Gorouter->>+Backend: Gorouter request
+      Note right of Backend: Backend handles the request and returns a response...
+    Backend->>-Gorouter: Backend Response
+  Gorouter->>-Client: Gorouter response
